@@ -6,10 +6,9 @@
     android:gravity="center">
 
     <ImageView
-        android:id="@+id/imageViewLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/mipmap-xxxhdpi/ic_launcher_round.webp"
-        android:adjustViewBounds="true"
-
-/RelativeLayout>
+    android:id="@+id/imageViewLogo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_launcher_round"
+    android:adjustViewBounds="true" 
+	    RelativeLayout>
