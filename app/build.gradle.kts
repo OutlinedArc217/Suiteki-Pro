@@ -63,7 +63,7 @@ android {
         }
     }
     sourceSets {
-        this["release"].java.srcDir(protobuf.generatedFilesBaseDir)
+        // this["release"].java.srcDir(protobuf.generatedFilesBaseDir)
         this["debug"].java.srcDir(protobuf.generatedFilesBaseDir)
     }
 }
@@ -113,6 +113,8 @@ dependencies {
 
     implementation(libs.circularprogressbar.compose)
 
+    implementation(libs.permission.flow.compose)
+
     implementation(files("lib/Bouncycastle.jar"))
 }
 
@@ -125,9 +127,37 @@ protobuf {
     generateProtoTasks {
         all().configureEach {
             builtins {
-                id("java"){}
+                id("java") {}
             }
         }
     }
 }
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.apply{
+        add("-Xlint:deprecation")
+        add("-Xlint:none")
+    }
+    options.isWarnings = false
+}
+
+afterEvaluate {
+    tasks.named("kspDebugKotlin") {
+        dependsOn("generateDebugProto")
+    }
+    tasks.named("kspReleaseKotlin") {
+        dependsOn("generateReleaseProto")
+    }
+    tasks.named("generateReleaseProto") {
+        dependsOn("compileDebugJavaWithJavac")
+    }   
+    tasks.named("generateDebugLintReportModel") {
+        dependsOn("generateReleaseProto")
+    }
+    tasks.named("lintAnalyzeDebug") {
+        dependsOn("generateReleaseProto")
+    }
+}
+
+
 
